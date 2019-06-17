@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.dao.NewsMapper">
+  <resultMap id="BaseResultMap" type="ssm.pojo.News">
+    <constructor>
+      <idArg column="news_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="news_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="news_date" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="news_place" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="news_image_location" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="ssm.pojo.News">
+    <constructor>
+      <idArg column="news_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="news_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="news_date" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="news_place" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="news_image_location" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="news_description" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    news_id, news_name, news_date, news_place, news_image_location
+  </sql>
+  <sql id="Blob_Column_List">
+    news_description
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="ssm.pojo.NewsExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from news
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="ssm.pojo.NewsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from news
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from news
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from news
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="ssm.pojo.NewsExample">
+    delete from news
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="ssm.pojo.News">
+    insert into news (news_id, news_name, news_date, 
+      news_place, news_image_location, news_description
+      )
+    values (#{newsId,jdbcType=INTEGER}, #{newsName,jdbcType=VARCHAR}, #{newsDate,jdbcType=VARCHAR},
+      #{newsPlace,jdbcType=VARCHAR}, #{newsImageLocation,jdbcType=VARCHAR}, #{newsDescription,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="ssm.pojo.News">
+    insert into news
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="newsId != null">
+        news_id,
+      </if>
+      <if test="newsName != null">
+        news_name,
+      </if>
+      <if test="newsDate != null">
+        news_date,
+      </if>
+      <if test="newsPlace != null">
+        news_place,
+      </if>
+      <if test="newsImageLocation != null">
+        news_image_location,
+      </if>
+      <if test="newsDescription != null">
+        news_description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="newsId != null">
+        #{newsId,jdbcType=INTEGER},
+      </if>
+      <if test="newsName != null">
+        #{newsName,jdbcType=VARCHAR},
+      </if>
+      <if test="newsDate != null">
+        #{newsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="newsPlace != null">
+        #{newsPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="newsImageLocation != null">
+        #{newsImageLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="newsDescription != null">
+        #{newsDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="ssm.pojo.NewsExample" resultType="java.lang.Integer">
+    select count(*) from news
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update news
+    <set>
+      <if test="record.newsId != null">
+        news_id = #{record.newsId,jdbcType=INTEGER},
+      </if>
+      <if test="record.newsName != null">
+        news_name = #{record.newsName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newsDate != null">
+        news_date = #{record.newsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newsPlace != null">
+        news_place = #{record.newsPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newsImageLocation != null">
+        news_image_location = #{record.newsImageLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="record.newsDescription != null">
+        news_description = #{record.newsDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update news
+    set news_id = #{record.newsId,jdbcType=INTEGER},
+      news_name = #{record.newsName,jdbcType=VARCHAR},
+      news_date = #{record.newsDate,jdbcType=VARCHAR},
+      news_place = #{record.newsPlace,jdbcType=VARCHAR},
+      news_image_location = #{record.newsImageLocation,jdbcType=VARCHAR},
+      news_description = #{record.newsDescription,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update news
+    set news_id = #{record.newsId,jdbcType=INTEGER},
+      news_name = #{record.newsName,jdbcType=VARCHAR},
+      news_date = #{record.newsDate,jdbcType=VARCHAR},
+      news_place = #{record.newsPlace,jdbcType=VARCHAR},
+      news_image_location = #{record.newsImageLocation,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="ssm.pojo.News">
+    update news
+    <set>
+      <if test="newsName != null">
+        news_name = #{newsName,jdbcType=VARCHAR},
+      </if>
+      <if test="newsDate != null">
+        news_date = #{newsDate,jdbcType=VARCHAR},
+      </if>
+      <if test="newsPlace != null">
+        news_place = #{newsPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="newsImageLocation != null">
+        news_image_location = #{newsImageLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="newsDescription != null">
+        news_description = #{newsDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="ssm.pojo.News">
+    update news
+    set news_name = #{newsName,jdbcType=VARCHAR},
+      news_date = #{newsDate,jdbcType=VARCHAR},
+      news_place = #{newsPlace,jdbcType=VARCHAR},
+      news_image_location = #{newsImageLocation,jdbcType=VARCHAR},
+      news_description = #{newsDescription,jdbcType=LONGVARCHAR}
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ssm.pojo.News">
+    update news
+    set news_name = #{newsName,jdbcType=VARCHAR},
+      news_date = #{newsDate,jdbcType=VARCHAR},
+      news_place = #{newsPlace,jdbcType=VARCHAR},
+      news_image_location = #{newsImageLocation,jdbcType=VARCHAR}
+    where news_id = #{newsId,jdbcType=INTEGER}
+  </update>
+</mapper>

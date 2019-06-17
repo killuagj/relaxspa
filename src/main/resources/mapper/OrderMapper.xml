@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.dao.OrderMapper">
+  <resultMap id="BaseResultMap" type="ssm.pojo.Order">
+    <constructor>
+      <idArg column="order_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="order_number" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="order_type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="order_service" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="guest_count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="order_price" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="order_date" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="order_time" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="order_location" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    order_id, order_number, order_type, order_service, guest_count, order_price, order_date, 
+    order_time, order_location
+  </sql>
+  <select id="selectByExample" parameterType="ssm.pojo.OrderExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from `order`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from `order`
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from `order`
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from `order`
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="ssm.pojo.OrderExample">
+    delete from `order`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="ssm.pojo.Order">
+    insert into `order` (order_id, order_number, order_type,
+      order_service, guest_count, order_price, 
+      order_date, order_time, order_location
+      )
+    values (#{orderId,jdbcType=INTEGER}, #{orderNumber,jdbcType=VARCHAR}, #{orderType,jdbcType=VARCHAR}, 
+      #{orderService,jdbcType=VARCHAR}, #{guestCount,jdbcType=INTEGER}, #{orderPrice,jdbcType=VARCHAR},
+      #{orderDate,jdbcType=VARCHAR}, #{orderTime,jdbcType=VARCHAR}, #{orderLocation,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="ssm.pojo.Order">
+    insert into `order`
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        order_id,
+      </if>
+      <if test="orderNumber != null">
+        order_number,
+      </if>
+      <if test="orderType != null">
+        order_type,
+      </if>
+      <if test="orderService != null">
+        order_service,
+      </if>
+      <if test="guestCount != null">
+        guest_count,
+      </if>
+      <if test="orderPrice != null">
+        order_price,
+      </if>
+      <if test="orderDate != null">
+        order_date,
+      </if>
+      <if test="orderTime != null">
+        order_time,
+      </if>
+      <if test="orderLocation != null">
+        order_location,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=INTEGER},
+      </if>
+      <if test="orderNumber != null">
+        #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null">
+        #{orderType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderService != null">
+        #{orderService,jdbcType=VARCHAR},
+      </if>
+      <if test="guestCount != null">
+        #{guestCount,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null">
+        #{orderPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDate != null">
+        #{orderDate,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTime != null">
+        #{orderTime,jdbcType=VARCHAR},
+      </if>
+      <if test="orderLocation != null">
+        #{orderLocation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="ssm.pojo.OrderExample" resultType="java.lang.Integer">
+    select count(*) from `order`
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update `order`
+    <set>
+      <if test="record.orderId != null">
+        order_id = #{record.orderId,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderNumber != null">
+        order_number = #{record.orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderType != null">
+        order_type = #{record.orderType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderService != null">
+        order_service = #{record.orderService,jdbcType=VARCHAR},
+      </if>
+      <if test="record.guestCount != null">
+        guest_count = #{record.guestCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.orderPrice != null">
+        order_price = #{record.orderPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderDate != null">
+        order_date = #{record.orderDate,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderTime != null">
+        order_time = #{record.orderTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.orderLocation != null">
+        order_location = #{record.orderLocation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update `order`
+    set order_id = #{record.orderId,jdbcType=INTEGER},
+      order_number = #{record.orderNumber,jdbcType=VARCHAR},
+      order_type = #{record.orderType,jdbcType=VARCHAR},
+      order_service = #{record.orderService,jdbcType=VARCHAR},
+      guest_count = #{record.guestCount,jdbcType=INTEGER},
+      order_price = #{record.orderPrice,jdbcType=VARCHAR},
+      order_date = #{record.orderDate,jdbcType=VARCHAR},
+      order_time = #{record.orderTime,jdbcType=VARCHAR},
+      order_location = #{record.orderLocation,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="ssm.pojo.Order">
+    update `order`
+    <set>
+      <if test="orderNumber != null">
+        order_number = #{orderNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="orderType != null">
+        order_type = #{orderType,jdbcType=VARCHAR},
+      </if>
+      <if test="orderService != null">
+        order_service = #{orderService,jdbcType=VARCHAR},
+      </if>
+      <if test="guestCount != null">
+        guest_count = #{guestCount,jdbcType=INTEGER},
+      </if>
+      <if test="orderPrice != null">
+        order_price = #{orderPrice,jdbcType=VARCHAR},
+      </if>
+      <if test="orderDate != null">
+        order_date = #{orderDate,jdbcType=VARCHAR},
+      </if>
+      <if test="orderTime != null">
+        order_time = #{orderTime,jdbcType=VARCHAR},
+      </if>
+      <if test="orderLocation != null">
+        order_location = #{orderLocation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ssm.pojo.Order">
+    update `order`
+    set order_number = #{orderNumber,jdbcType=VARCHAR},
+      order_type = #{orderType,jdbcType=VARCHAR},
+      order_service = #{orderService,jdbcType=VARCHAR},
+      guest_count = #{guestCount,jdbcType=INTEGER},
+      order_price = #{orderPrice,jdbcType=VARCHAR},
+      order_date = #{orderDate,jdbcType=VARCHAR},
+      order_time = #{orderTime,jdbcType=VARCHAR},
+      order_location = #{orderLocation,jdbcType=VARCHAR}
+    where order_id = #{orderId,jdbcType=INTEGER}
+  </update>
+</mapper>

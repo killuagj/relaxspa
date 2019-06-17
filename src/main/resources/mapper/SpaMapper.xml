@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ssm.dao.SpaMapper">
+  <resultMap id="BaseResultMap" type="ssm.pojo.Spa">
+    <constructor>
+      <idArg column="spa_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="spa_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="spa_type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="spa_duration" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="spa_price" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="spa_left_count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="ssm.pojo.Spa">
+    <constructor>
+      <idArg column="spa_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="spa_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="spa_type" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="spa_duration" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="spa_price" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="spa_left_count" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="spa_description" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    spa_id, spa_name, spa_type, spa_duration, spa_price, spa_left_count
+  </sql>
+  <sql id="Blob_Column_List">
+    spa_description
+  </sql>
+  <select id="selectByExampleWithBLOBs" parameterType="ssm.pojo.SpaExample" resultMap="ResultMapWithBLOBs">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from spa
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" parameterType="ssm.pojo.SpaExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from spa
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+  select
+  <include refid="Base_Column_List" />
+  ,
+  <include refid="Blob_Column_List" />
+  from spa
+  where spa_id = #{spaId,jdbcType=INTEGER}
+</select>
+  <select id="selectBySpaName" parameterType="java.lang.String" resultMap="ResultMapWithBLOBs">
+  select
+  <include refid="Base_Column_List" />
+  ,
+  <include refid="Blob_Column_List" />
+  from spa
+  where spa_name = #{spaName,jdbcType=VARCHAR}
+  </select>
+  <select id="selectAll" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from spa
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from spa
+    where spa_id = #{spaId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="ssm.pojo.SpaExample">
+    delete from spa
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="ssm.pojo.Spa">
+    insert into spa (spa_id, spa_name, spa_type, 
+      spa_duration, spa_price, spa_left_count, 
+      spa_description)
+    values (#{spaId,jdbcType=INTEGER}, #{spaName,jdbcType=VARCHAR}, #{spaType,jdbcType=VARCHAR}, 
+      #{spaDuration,jdbcType=DOUBLE}, #{spaPrice,jdbcType=DOUBLE}, #{spaLeftCount,jdbcType=INTEGER}, 
+      #{spaDescription,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="ssm.pojo.Spa">
+    insert into spa
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="spaId != null">
+        spa_id,
+      </if>
+      <if test="spaName != null">
+        spa_name,
+      </if>
+      <if test="spaType != null">
+        spa_type,
+      </if>
+      <if test="spaDuration != null">
+        spa_duration,
+      </if>
+      <if test="spaPrice != null">
+        spa_price,
+      </if>
+      <if test="spaLeftCount != null">
+        spa_left_count,
+      </if>
+      <if test="spaDescription != null">
+        spa_description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="spaId != null">
+        #{spaId,jdbcType=INTEGER},
+      </if>
+      <if test="spaName != null">
+        #{spaName,jdbcType=VARCHAR},
+      </if>
+      <if test="spaType != null">
+        #{spaType,jdbcType=VARCHAR},
+      </if>
+      <if test="spaDuration != null">
+        #{spaDuration,jdbcType=DOUBLE},
+      </if>
+      <if test="spaPrice != null">
+        #{spaPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="spaLeftCount != null">
+        #{spaLeftCount,jdbcType=INTEGER},
+      </if>
+      <if test="spaDescription != null">
+        #{spaDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="ssm.pojo.SpaExample" resultType="java.lang.Integer">
+    select count(*) from spa
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update spa
+    <set>
+      <if test="record.spaId != null">
+        spa_id = #{record.spaId,jdbcType=INTEGER},
+      </if>
+      <if test="record.spaName != null">
+        spa_name = #{record.spaName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spaType != null">
+        spa_type = #{record.spaType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.spaDuration != null">
+        spa_duration = #{record.spaDuration,jdbcType=DOUBLE},
+      </if>
+      <if test="record.spaPrice != null">
+        spa_price = #{record.spaPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="record.spaLeftCount != null">
+        spa_left_count = #{record.spaLeftCount,jdbcType=INTEGER},
+      </if>
+      <if test="record.spaDescription != null">
+        spa_description = #{record.spaDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map">
+    update spa
+    set spa_id = #{record.spaId,jdbcType=INTEGER},
+      spa_name = #{record.spaName,jdbcType=VARCHAR},
+      spa_type = #{record.spaType,jdbcType=VARCHAR},
+      spa_duration = #{record.spaDuration,jdbcType=DOUBLE},
+      spa_price = #{record.spaPrice,jdbcType=DOUBLE},
+      spa_left_count = #{record.spaLeftCount,jdbcType=INTEGER},
+      spa_description = #{record.spaDescription,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update spa
+    set spa_id = #{record.spaId,jdbcType=INTEGER},
+      spa_name = #{record.spaName,jdbcType=VARCHAR},
+      spa_type = #{record.spaType,jdbcType=VARCHAR},
+      spa_duration = #{record.spaDuration,jdbcType=DOUBLE},
+      spa_price = #{record.spaPrice,jdbcType=DOUBLE},
+      spa_left_count = #{record.spaLeftCount,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="ssm.pojo.Spa">
+    update spa
+    <set>
+      <if test="spaName != null">
+        spa_name = #{spaName,jdbcType=VARCHAR},
+      </if>
+      <if test="spaType != null">
+        spa_type = #{spaType,jdbcType=VARCHAR},
+      </if>
+      <if test="spaDuration != null">
+        spa_duration = #{spaDuration,jdbcType=DOUBLE},
+      </if>
+      <if test="spaPrice != null">
+        spa_price = #{spaPrice,jdbcType=DOUBLE},
+      </if>
+      <if test="spaLeftCount != null">
+        spa_left_count = #{spaLeftCount,jdbcType=INTEGER},
+      </if>
+      <if test="spaDescription != null">
+        spa_description = #{spaDescription,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where spa_id = #{spaId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="ssm.pojo.Spa">
+    update spa
+    set spa_name = #{spaName,jdbcType=VARCHAR},
+      spa_type = #{spaType,jdbcType=VARCHAR},
+      spa_duration = #{spaDuration,jdbcType=DOUBLE},
+      spa_price = #{spaPrice,jdbcType=DOUBLE},
+      spa_left_count = #{spaLeftCount,jdbcType=INTEGER},
+      spa_description = #{spaDescription,jdbcType=LONGVARCHAR}
+    where spa_id = #{spaId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="ssm.pojo.Spa">
+    update spa
+    set spa_name = #{spaName,jdbcType=VARCHAR},
+      spa_type = #{spaType,jdbcType=VARCHAR},
+      spa_duration = #{spaDuration,jdbcType=DOUBLE},
+      spa_price = #{spaPrice,jdbcType=DOUBLE},
+      spa_left_count = #{spaLeftCount,jdbcType=INTEGER}
+    where spa_id = #{spaId,jdbcType=INTEGER}
+  </update>
+</mapper>
